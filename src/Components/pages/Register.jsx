@@ -11,25 +11,12 @@ const Register = () => {
         terms: false,
     });
 
-
     const handleButtonClick = () => {
         // this.setState({
         //     toggle: !this.state.toggle
         // })
         setToggle(!toggle);
     }
-
-    // handleUserChange(event){
-    //     this.setState({
-    //         username: event.target.value
-    //     })
-    // }
-
-    // handleAgeChange(event){
-    //     this.setState({
-    //         age: event.target.value
-    //     })
-    // }
 
     const handleChange = (e) => {
         console.log(e.target.name)
@@ -47,7 +34,6 @@ const Register = () => {
     const handleOnSubmit = (e) => {
         e.preventDefault()
         console.log({ e })
-        //validaciones (usar librería: yup readme (github))
         if (!person.username) {
             alert('el campo de usuario está vacío')
         }
