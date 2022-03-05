@@ -1,26 +1,22 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import './Register.css';
 
-export default class Register extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            toggle: false,
-            username: '',
-            age: '',
-            country: '',
-            terms: false,
-        }
-        this.handleButtonClick = this.handleButtonClick.bind(this) // con hooks no hace falta hacer este bindeado
-        // this.handleUserChange = this.handleUserChange.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleOnSubmit = this.handleOnSubmit.bind(this)
-    }
+const Register = () => {
 
-    handleButtonClick(){
-        this.setState({
-            toggle: !this.state.toggle
-        })
+    const [toggle, setToggle] = useState(false);
+    const [person, setPerson] = useState({
+        username: '',
+        age: '',
+        country: '',
+        terms: false,
+    });
+
+
+    const handleButtonClick = () => {
+        // this.setState({
+        //     toggle: !this.state.toggle
+        // })
+        setToggle(!toggle);
     }
 
     // handleUserChange(event){
@@ -35,84 +31,83 @@ export default class Register extends Component {
     //     })
     // }
 
-    handleChange(event){
-        console.log(event.target.name)
-        console.log(event.target.value)
-        this.setState({
-            // genérico:
-            [event.target.name]: 
-                event.target.type === 'checkbox' 
-                ? event.target.checked 
-                : event.target.value //acceder a key del objeto y asignar valor 
-            
+    const handleChange = (e) => {
+        console.log(e.target.name)
+        console.log(e.target.value)
+        setPerson({
+            ...person, // para que no se pierdan los datos ya cargados
+            [e.target.name]:
+                e.target.type === 'checkbox'
+                    ? e.target.checked
+                    : e.target.value //acceder a key del objeto y asignar valor 
+
         })
     }
 
-    handleOnSubmit(event){
-        event.preventDefault()
-        console.log({event})
+    const handleOnSubmit = (e) => {
+        e.preventDefault()
+        console.log({ e })
         //validaciones (usar librería: yup readme (github))
-        if(!this.state.username) {
+        if (!person.username) {
             alert('el campo de usuario está vacío')
         }
         // si todo ok:
-        const {username, age, terms, country} = this.state
-        console.log({
-            username, age, terms, country
-        })
+
+        console.log(person)
         // interacción con backend/servidor
         // ...
     }
 
-    render() {
-        return (<>
+
+    return (
+        <>
             <div>
-                <form onSubmit={this.handleOnSubmit} action="/" method="post" className="form-register">
+                <form onSubmit={handleOnSubmit} action="/" method="post" className="form-register">
                     <label htmlFor="username">Usuario</label>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="ingrese su usuario" name="username"
-                        onChange={this.handleChange}
-                        value={this.state.username} />
+                        onChange={handleChange}
+                        value={person.username} />
 
                     <label htmlFor="age">Age</label>
-                    <input 
-                        type="number" 
-                        placeholder="Ingrese su edad" 
+                    <input
+                        type="number"
+                        placeholder="Ingrese su edad"
                         name="age"
-                        onChange={this.handleChange}
-                        value={this.state.age} />
+                        onChange={handleChange}
+                        value={person.age} />
                     <label htmlFor="terms">
-                        <input 
+                        <input
                             type="checkbox"
                             name="terms"
-                            checked={this.state.terms}
-                            onChange={this.handleChange}/>
-                            
+                            checked={person.terms}
+                            onChange={handleChange} />
+
                         Terms and conditions
                     </label>
                     <label htmlFor="country">Country</label>
-                    <select 
-                        name="country" 
-                        onChange={this.handleChange}
-                        value={this.state.country}>
+                    <select
+                        name="country"
+                        onChange={handleChange}
+                        value={person.country}>
                         <option value="Argentina">Argentina</option>
                         <option value="Colombia">Colombia</option>
                         <option value="Peru">Peru</option>
                     </select>
-                    <button type="submit" onClick={() => this.handleButtonClick()}>Registrarse</button>
+                    <button type="submit" onClick={() => handleButtonClick()}>Registrarse</button>
                 </form>
             </div>
-            
+
             <p>Eventos...</p>
-            <p>Button: {this.state.toggle ? 'ON' : 'OFF'} </p>
-            <p>Username: {this.state.username}</p>
-            <p>Age: {this.state.age}</p>
-            <p>Country: {this.state.country}</p>
-            <p>Checkbox checked?: {this.state.terms ? 'YES' : 'NO'}</p>
+            <p>Button: {person.toggle ? 'ON' : 'OFF'} </p>
+            <p>Username: {person.username}</p>
+            <p>Age: {person.age}</p>
+            <p>Country: {person.country}</p>
+            <p>Checkbox checked?: {person.terms ? 'YES' : 'NO'}</p>
 
         </>
-        )
-    }
-
+    )
 }
+
+export default Register
